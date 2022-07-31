@@ -1,67 +1,40 @@
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import NoteInput from "./components/NoteInput";
+import NoteItem from "./components/NoteItem";
 
 function App() {
+  const notes = useSelector((state) => state.notes.notes);
+
   return (
-    <main>
+    <Wrapper>
       <NoteInput />
-    </main>
+
+      <div className='notes-container'>
+        {notes?.map((note) => {
+          return (
+            <NoteItem key={note.id} color={note.color} text={note.noteText} />
+          );
+        })}
+      </div>
+    </Wrapper>
   );
 }
 
 const Wrapper = styled.main`
-  .add-note {
-    max-width: 450px;
-    padding: 1rem;
-    margin: 1rem auto;
-    border: 1px solid grey;
-    border-radius: 0.75rem;
-    box-shadow: var(--shadow-2);
-    height: auto;
-    position: relative;
-  }
-  textarea {
+  max-width: 500px;
+  margin: 0 auto;
+  .notes-container {
     width: 100%;
-    resize: none;
-    font-size: 1rem;
-    background: none;
-    border: none;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
-  textarea:focus {
-    outline: none;
-  }
-  .note-color {
-    background: var(--bg-color);
-    display: flex;
-    position: absolute;
-    padding: 0.25rem;
-    left: 1rem;
-    bottom: -1.5rem;
-    border: 0.1rem solid black;
+  .note {
+    padding: 0.5rem 0.5rem;
+    box-shadow: var(--shadow-3);
     border-radius: 0.2rem;
-    box-shadow: var(--shadow-2);
-  }
-  .color-option {
-    height: 2rem;
-    width: 2rem;
-    border-radius: 50%;
-    margin-right: 1rem;
-    border: 1px solid transparent;
-  }
-  .color-option:hover {
-    border: 1px solid white;
-  }
-  .red {
-    background: #5c2b29;
-  }
-  .yellow {
-    background: #f9b219;
-  }
-  .orange {
-    background: #ff8801;
-  }
-  .green {
-    background: #05c270;
   }
 `;
 

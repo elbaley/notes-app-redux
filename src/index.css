@@ -4,8 +4,8 @@
   line-height: 24px;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color-scheme: dark;
+  color: white;
   background-color: #242424;
 
   font-synthesis: none;
@@ -15,6 +15,11 @@
   -webkit-text-size-adjust: 100%;
   /* colors */
   --bg-color: #242424;
+  --red: #5c2b29;
+  --yellow: #f9b219;
+  --orange: #ff8801;
+  --green: #05c270;
+  --dark: rgba(0, 0, 0, 0.2);
 
   /* box shadow*/
   --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -37,6 +42,7 @@ a:hover {
 
 body {
   margin: 0;
+  color: white;
 }
 
 h1 {
@@ -46,6 +52,7 @@ h1 {
 
 button {
   border-radius: 8px;
+  color: white;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
@@ -61,4 +68,20 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.red {
+  background: var(--red);
+}
+.yellow {
+  background: var(--yellow);
+}
+.orange {
+  background: var(--orange);
+}
+.green {
+  background: var(--green);
+}
+.dark {
+  background: var(--dark);
 }

@@ -1,9 +1,16 @@
 import styled from "styled-components";
 import { BsPalette } from "react-icons/bs";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addToDoItem } from "../features/notes/notesSlice";
 
 const NoteInput = () => {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [note, setNote] = useState({
+    noteText: "",
+    color: "dark",
+  });
   const colorOptionsRef = useRef();
   const buttonRef = useRef();
   useEffect(() => {
@@ -19,10 +26,33 @@ const NoteInput = () => {
       }
     }
     document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
   }, [colorOptionsRef]);
+
+  function handleAddNote() {
+    if (note.noteText) {
+      dispatch(
+        addToDoItem({
+          noteText: note.noteText,
+          color: note.color,
+        })
+      );
+    }
+    setNote({ ...note, noteText: "" });
+  }
   return (
-    <Wrapper>
-      <textarea placeholder='Take a note...' name='note'></textarea>
+    <Wrapper className={note.color}>
+      <textarea
+        value={note.noteText}
+        onChange={(e) => {
+          setNote({ ...note, noteText: e.target.value });
+        }}
+        placeholder='Take a note...'
+        name='note'
+      ></textarea>
       <div className='buttons'>
         <button
           ref={buttonRef}
@@ -33,15 +63,41 @@ const NoteInput = () => {
         >
           <BsPalette />
         </button>
-        <button className='add-note'>Add Note</button>
+        <button onClick={handleAddNote} className='add-note'>
+          Add Note
+        </button>
       </div>
-
       <div ref={colorOptionsRef} className={`note-color ${isOpen && "show"}`}>
-        <div className='color-option black'></div>
-        <div className='color-option red'></div>
-        <div className='color-option orange'></div>
-        <div className='color-option yellow'></div>
-        <div className='color-option green'></div>
+        <div
+          onClick={() => setNote({ ...note, color: "dark" })}
+          className={`color-option dark ${
+            note.color === "dark" ? "active" : ""
+          } `}
+        ></div>
+        <div
+          onClick={() => setNote({ ...note, color: "red" })}
+          className={`color-option red ${
+            note.color === "red" ? "active" : ""
+          } `}
+        ></div>
+        <div
+          onClick={() => setNote({ ...note, color: "orange" })}
+          className={`color-option orange ${
+            note.color === "orange" ? "active" : ""
+          } `}
+        ></div>
+        <div
+          onClick={() => setNote({ ...note, color: "yellow" })}
+          className={`color-option yellow ${
+            note.color === "yellow" ? "active" : ""
+          } `}
+        ></div>
+        <div
+          onClick={() => setNote({ ...note, color: "green" })}
+          className={`color-option green ${
+            note.color === "green" ? "active" : ""
+          } `}
+        ></div>
       </div>
     </Wrapper>
   );
@@ -66,6 +122,14 @@ const Wrapper = styled.section`
   }
   textarea:focus {
     outline: none;
+  }
+  textarea::placeholder {
+    color: white;
+    opacity: 0.8;
+  }
+  textarea:-ms-input-placeholder {
+    color: white;
+    opacity: 0.8;
   }
   .note-color {
     background: var(--bg-color);
@@ -98,20 +162,15 @@ const Wrapper = styled.section`
   .color-option:hover {
     border: 1px solid white;
   }
-  .red {
-    background: #5c2b29;
+
+  .active {
+    position: relative;
   }
-  .yellow {
-    background: #f9b219;
-  }
-  .orange {
-    background: #ff8801;
-  }
-  .green {
-    background: #05c270;
-  }
-  .black {
-    background: rgba(0, 0, 0, 0.2);
+  .active:before {
+    content: "✔";
+    position: absolute;
+    right: 0;
+    top: -0.4rem;
   }
   .buttons {
     display: flex;
